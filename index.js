@@ -75,6 +75,30 @@ server.get("/api/users/:id", (req, res) => {
 		});
 });
 
+// | DELETE | /api/users/:id | Removes the user with the specified `id` and returns the deleted user.
+server.delete("/api/hubs/:id", (req, res) => {
+	const id = req.params.id;
+
+	Users.remove(id)
+		.then(deleted => {
+			if (!deleted) {
+				res.status(404).json({
+					errorMessage: "The user with the specified ID does not exist."
+				});
+			} else {
+				// res.status(204).end();
+				res.status(200).json(deleted);
+			}
+		})
+		.catch(error => {
+			console.log(error);
+			// handle the error
+			res.status(500).json({
+				errorMessage: "The user could not be removed"
+			});
+		});
+});
+
 //update a User
 // | PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`.
 
